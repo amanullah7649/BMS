@@ -1,12 +1,16 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
 
 @Controller()
 export class AppController {
-  constructor(private readonly appService: AppService) {}
-
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  returnHealth(): object {
+    const projectHealth = {
+      name: 'BMS',
+      version: '1.0.0',
+      status: 'healthy',
+      message: 'Project is running',
+      timestamp: new Date().toISOString(),
+    };
+    return projectHealth;
   }
 }
