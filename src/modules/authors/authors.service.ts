@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import { PipelineStage } from 'mongoose';
+import { AuthorRepository } from './author.repository';
 import { CreateAuthorDto } from './dtos/create-author.dto';
 import { QueryAuthorDto } from './dtos/query-author.dto';
 import { UpdateAuthorDto } from './dtos/update-author.dto';
@@ -10,8 +10,7 @@ import { Author } from './schemas/author.schema';
 @Injectable()
 export class AuthorsService {
   constructor(
-    @InjectModel(Author.name)
-    private readonly AuthorModel: Model<Author>
+    private readonly authorRepository: AuthorRepository
   ) { }
 
 
@@ -28,7 +27,7 @@ export class AuthorsService {
       birthDate: createAuthorDto.birthDate ? new Date(createAuthorDto.birthDate) : undefined,
     }
 
-    const author = await this.AuthorModel.create(authorPayload);
+    const author = await this.authorRepository.create(authorPayload);
     return author;
   }
   /**
@@ -42,14 +41,7 @@ export class AuthorsService {
       updateData.birthDate = new Date(updateAuthorDto.birthDate);
     }
 
-    const author = await this.AuthorModel
-      .findByIdAndUpdate(id, updateData, { new: true, runValidators: true })
-      .exec();
-
-    if (!author) {
-      throw new NotFoundException(`Author with ID ${id} not found`);
-    }
-
+    const author = await this.authorRepository.update(id, updateData);
     return author;
   }
 
@@ -68,7 +60,7 @@ export class AuthorsService {
       filter.lastName = { $regex: lastName, $options: 'i' };
     }
 
-    const [result] = await this.AuthorModel.aggregate([
+    const aggregate: PipelineStage[] = [
       { $match: filter },
       { $sort: { createdAt: -1 } },
       {
@@ -82,7 +74,9 @@ export class AuthorsService {
           ],
         },
       },
-    ]).exec();
+    ]
+
+    const [result] = await this.authorRepository.runAggregate(aggregate);
 
     const data = result?.data ?? [];
     const count = result?.totalCount?.[0]?.count ?? 0;
@@ -94,7 +88,8 @@ export class AuthorsService {
    * Find a single author by ID
    */
   async findOne(id: string): Promise<Author> {
-    const author = await this.AuthorModel.findById(id).exec();
+
+    const author = await this.authorRepository.findOne(id);
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
     }
@@ -107,7 +102,7 @@ export class AuthorsService {
    * Delete an author by ID
    */
   async remove(id: string): Promise<void> {
-    const result = await this.AuthorModel.findByIdAndDelete(id).exec();
+    const result = await this.authorRepository.delete(id);
     if (!result) {
       throw new NotFoundException(`Author with ID ${id} not found`);
     }
