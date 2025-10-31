@@ -5,5 +5,17 @@
   "testRegex": ".e2e-spec.ts$",
   "transform": {
     "^.+\\.(t|j)s$": "ts-jest"
+  },
+  "setupFilesAfterEnv": ["<rootDir>/setup-e2e.ts"],
+  "moduleNameMapper": {
+    "^@common/(.*)$": "<rootDir>/../src/common/$1",
+    "^@database/(.*)$": "<rootDir>/../src/database/$1",
+    "^@app/(.*)$": "<rootDir>/../src/app/$1",
+    "^@config/(.*)$": "<rootDir>/../src/config/$1",
+    "^@models/(.*)$": "<rootDir>/../src/models/$1",
+    "^@services/(.*)$": "<rootDir>/../src/services/$1",
+    "^@utils/(.*)$": "<rootDir>/../src/utils/$1",
+    "^@interfaces/(.*)$": "<rootDir>/../src/interfaces/$1",
+    "^@decorators/(.*)$": "<rootDir>/../src/decorators/$1"
   }
 }

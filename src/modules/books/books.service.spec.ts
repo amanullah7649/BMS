@@ -36,7 +36,7 @@ const mockBook = {
   _id: '507f1f77bcf86cd799439012',
   title: 'Test Book',
   isbn: '978-3-16-148410-0',
-  publicationDate: new Date('2024-01-15'),
+  publishedDate: new Date('2024-01-15'),
   genre: 'Fantasy',
   authorId: new Types.ObjectId('507f1f77bcf86cd799439011'),
   createdAt: new Date(),
@@ -93,7 +93,7 @@ describe('BooksService', () => {
       const createBookDto: CreateBookDto = {
         title: 'Test Book',
         isbn: '978-3-16-148410-0',
-        publicationDate: '2024-01-15',
+        publishedDate: '2024-01-15',
         genre: 'Fantasy',
         authorId: '507f1f77bcf86cd799439011',
       };
@@ -108,7 +108,7 @@ describe('BooksService', () => {
       expect(booksRepository.create).toHaveBeenCalledWith({
         title: createBookDto.title,
         isbn: createBookDto.isbn,
-        publicationDate: new Date(createBookDto.publicationDate),
+        publishedDate: new Date(createBookDto.publishedDate),
         genre: createBookDto.genre,
         authorId: expect.any(Types.ObjectId),
       });
@@ -119,13 +119,13 @@ describe('BooksService', () => {
         title: 'Test Book',
         isbn: '978-3-16-148410-0',
         genre: undefined,
-        publicationDate: undefined,
+        publishedDate: undefined,
         authorId: '507f1f77bcf86cd799439011',
       } as CreateBookDto;
 
       const bookWithoutOptionalFields = {
         ...mockBook,
-        publicationDate: undefined,
+        publishedDate: undefined,
         genre: undefined,
       } as unknown as Book;
 
@@ -138,7 +138,7 @@ describe('BooksService', () => {
       expect(booksRepository.create).toHaveBeenCalledWith({
         title: createBookDto.title,
         isbn: createBookDto.isbn,
-        publicationDate: undefined,
+        publishedDate: undefined,
         genre: undefined,
         authorId: expect.any(Types.ObjectId),
       });
@@ -412,14 +412,14 @@ describe('BooksService', () => {
       });
     });
 
-    it('should convert publicationDate string to Date when provided', async () => {
+    it('should convert publishedDate string to Date when provided', async () => {
       const id = '507f1f77bcf86cd799439012';
       const updateBookDto: UpdateBookDto = {
-        publicationDate: '2025-01-15',
+        publishedDate: '2025-01-15',
       };
       const updatedBook = {
         ...mockBook,
-        publicationDate: new Date('2025-01-15'),
+        publishedDate: new Date('2025-01-15'),
       } as unknown as Book;
 
       jest.spyOn(booksRepository, 'update').mockResolvedValue(updatedBook);
@@ -428,7 +428,7 @@ describe('BooksService', () => {
 
       expect(result).toEqual(updatedBook);
       expect(booksRepository.update).toHaveBeenCalledWith(id, {
-        publicationDate: new Date('2025-01-15'),
+        publishedDate: new Date('2025-01-15'),
       });
     });
 

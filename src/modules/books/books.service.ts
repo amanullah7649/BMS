@@ -31,7 +31,7 @@ export class BooksService {
         const bookPayload: Partial<Book> = {
             title: createBookDto.title,
             isbn: createBookDto.isbn ?? "",
-            publicationDate: createBookDto.publicationDate ? new Date(createBookDto.publicationDate) : undefined,
+            publishedDate: createBookDto.publishedDate ? new Date(createBookDto.publishedDate) : undefined,
             genre: createBookDto.genre ?? undefined,
             authorId: authorObjectId
         }
@@ -124,8 +124,8 @@ export class BooksService {
             updateData.authorId = NestHelper.getInstance().getObjectId(author._id);
         }
 
-        if (updateBookDto.publicationDate) {
-            updateData.publicationDate = new Date(updateBookDto.publicationDate);
+        if (updateBookDto.publishedDate) {
+            updateData.publishedDate = new Date(updateBookDto.publishedDate);
         }
 
         const book = await this.booksRepository.update(id, updateData);

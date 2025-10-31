@@ -28,7 +28,7 @@ export class Book extends Document {
         required: false,
         default: null,
     })
-    publicationDate?: Date;
+    publishedDate?: Date;
     @Prop({
         type: String,
         required: false,
