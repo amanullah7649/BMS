@@ -17,6 +17,7 @@ export class Book extends Document {
     @Prop({
         type: String,
         required: [true, "ISBN is required"],
+        unique: true,
         trim: true,
         maxlength: [50, "ISBN must not exceed 50 characters"],
     })
@@ -30,18 +31,19 @@ export class Book extends Document {
     publicationDate?: Date;
     @Prop({
         type: String,
-        required: [true, "Publisher is required"],
+        required: false,
         trim: true,
-        maxlength: [100, "Publisher must not exceed 100 characters"],
+        maxlength: [100, "Genre must not exceed 100 characters"],
+        default: null,
     })
-    genre: string;
+    genre?: string;
 
     @Prop({
         type: mongoose.Schema.Types.ObjectId,
         ref: Author.name,
         required: [true, "Author is required"],
     })
-    author: Author;
+    authorId: mongoose.Types.ObjectId;
 
 }
 

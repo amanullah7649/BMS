@@ -1,3 +1,4 @@
+import { NestHelper } from "@common/helpers/nest.helper";
 import { Injectable } from "@nestjs/common";
 import { InjectModel } from "@nestjs/mongoose";
 import { Model, PipelineStage } from "mongoose";
@@ -23,8 +24,18 @@ export class AuthorRepository {
         return this.authorModel.aggregate(aggregate);
     }
 
-    async findOne(id: string): Promise<Author> {
-        return this.authorModel.findById(id);
+    async findById(id: string): Promise<Author | null> {
+
+        if (!id) {
+            return null;
+        }
+        const authId = NestHelper.getInstance().getObjectId(id);
+
+        const authorDoc = await this.authorModel.findById(authId).lean().exec();
+        if (!authorDoc) {
+            return null;
+        }
+        return authorDoc as unknown as Author;
     }
 
     async update(id: string, author: Author): Promise<Author> {

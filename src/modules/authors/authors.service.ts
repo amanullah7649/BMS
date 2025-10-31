@@ -92,7 +92,8 @@ export class AuthorsService {
    */
   async findOne(id: string): Promise<Author> {
 
-    const author = await this.authorRepository.findOne(id);
+
+    const author = await this.authorRepository.findById(id);
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
     }
