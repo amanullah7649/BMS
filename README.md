@@ -1,85 +1,283 @@
-<p align="center">
-  <a href="http://nestjs.com/" target="blank"><img src="https://nestjs.com/img/logo-small.svg" width="120" alt="Nest Logo" /></a>
-</p>
+# Book Management System (BMS)
 
-[circleci-image]: https://img.shields.io/circleci/build/github/nestjs/nest/master?token=abc123def456
-[circleci-url]: https://circleci.com/gh/nestjs/nest
+A RESTful API for managing books and authors built with NestJS, TypeScript, and MongoDB.
 
-  <p align="center">A progressive <a href="http://nodejs.org" target="_blank">Node.js</a> framework for building efficient and scalable server-side applications.</p>
-    <p align="center">
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/v/@nestjs/core.svg" alt="NPM Version" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/l/@nestjs/core.svg" alt="Package License" /></a>
-<a href="https://www.npmjs.com/~nestjscore" target="_blank"><img src="https://img.shields.io/npm/dm/@nestjs/common.svg" alt="NPM Downloads" /></a>
-<a href="https://circleci.com/gh/nestjs/nest" target="_blank"><img src="https://img.shields.io/circleci/build/github/nestjs/nest/master" alt="CircleCI" /></a>
-<a href="https://coveralls.io/github/nestjs/nest?branch=master" target="_blank"><img src="https://coveralls.io/repos/github/nestjs/nest/badge.svg?branch=master#9" alt="Coverage" /></a>
-<a href="https://discord.gg/G7Qnnhy" target="_blank"><img src="https://img.shields.io/badge/discord-online-brightgreen.svg" alt="Discord"/></a>
-<a href="https://opencollective.com/nest#backer" target="_blank"><img src="https://opencollective.com/nest/backers/badge.svg" alt="Backers on Open Collective" /></a>
-<a href="https://opencollective.com/nest#sponsor" target="_blank"><img src="https://opencollective.com/nest/sponsors/badge.svg" alt="Sponsors on Open Collective" /></a>
-  <a href="https://paypal.me/kamilmysliwiec" target="_blank"><img src="https://img.shields.io/badge/Donate-PayPal-ff3f59.svg" alt="Donate us"/></a>
-    <a href="https://opencollective.com/nest#sponsor"  target="_blank"><img src="https://img.shields.io/badge/Support%20us-Open%20Collective-41B883.svg" alt="Support us"></a>
-  <a href="https://twitter.com/nestframework" target="_blank"><img src="https://img.shields.io/twitter/follow/nestframework.svg?style=social&label=Follow" alt="Follow us on Twitter"></a>
-</p>
-  <!--[![Backers on Open Collective](https://opencollective.com/nest/backers/badge.svg)](https://opencollective.com/nest#backer)
-  [![Sponsors on Open Collective](https://opencollective.com/nest/sponsors/badge.svg)](https://opencollective.com/nest#sponsor)-->
+## 📋 Prerequisites
 
-## Description
+- Node.js (v18+)
+- Docker & Docker Compose
+- npm or yarn
 
-[Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
+## 🚀 Quick Start
 
-## Project setup
+### 1. Clone and Install
 
 ```bash
-$ npm install
+git clone <repository-url>
+cd bms
+npm install
 ```
 
-## Compile and run the project
+### 2. Environment Setup
+
+Create a `.env` file in the root directory:
+
+```env
+MONGODB_URI=mongodb://admin:admin123@localhost:27017/book_management?authSource=admin
+PORT=3000
+NODE_ENV=development
+```
+
+### 3. Start Database (Docker)
 
 ```bash
-# development
-$ npm run start
+# Start MongoDB and Mongo Express
+docker-compose up -d
 
-# watch mode
-$ npm run start:dev
-
-# production mode
-$ npm run start:prod
+# Verify containers are running
+docker ps
 ```
 
-## Run tests
+**Access:**
+- MongoDB: `localhost:27017`
+- Mongo Express (UI): `http://localhost:8081`
+  - Username: `admin`
+  - Password: `admin123`
+
+### 4. Run Application
 
 ```bash
-# unit tests
-$ npm run test
+# Development mode (with auto-reload)
+npm run start:dev
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# Production mode
+npm run start:prod
 ```
 
-## Resources
+API will be available at: `http://localhost:3000`
 
-Check out a few resources that may come in handy when working with NestJS:
+---
 
-- Visit the [NestJS Documentation](https://docs.nestjs.com) to learn more about the framework.
-- For questions and support, please visit our [Discord channel](https://discord.gg/G7Qnnhy).
-- To dive deeper and get more hands-on experience, check out our official video [courses](https://courses.nestjs.com/).
-- Visualize your application graph and interact with the NestJS application in real-time using [NestJS Devtools](https://devtools.nestjs.com).
-- Need help with your project (part-time to full-time)? Check out our official [enterprise support](https://enterprise.nestjs.com).
-- To stay in the loop and get updates, follow us on [X](https://x.com/nestframework) and [LinkedIn](https://linkedin.com/company/nestjs).
-- Looking for a job, or have a job to offer? Check out our official [Jobs board](https://jobs.nestjs.com).
+## 🧪 Testing
 
-## Support
+### Unit Tests
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
+Run unit tests for services (AuthorsService, BooksService):
 
-## Stay in touch
+```bash
+# Run all unit tests
+npm test
 
-- Author - [Kamil Myśliwiec](https://twitter.com/kammysliwiec)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
+# Run specific test file
+npm test -- books.service.spec.ts
 
-## License
+# Run with coverage
+npm run test:cov
 
-Nest is [MIT licensed](https://github.com/nestjs/nest/blob/master/LICENSE).
+# Watch mode
+npm run test:watch
+```
+
+### E2E Tests
+
+**Setup:**
+
+1. Create `.env.e2e` file:
+
+```env
+MONGODB_URI=mongodb://admin:admin123@localhost:27017/book_management_test?authSource=admin
+PORT=3001
+NODE_ENV=test
+```
+
+2. Ensure MongoDB is running:
+
+```bash
+docker-compose up -d mongodb
+```
+
+**Run E2E Tests:**
+
+```bash
+# Run all E2E tests
+npm run test:e2e
+
+# Run with verbose output
+npm run test:e2e -- --verbose
+```
+
+---
+
+## 🐳 Docker
+
+### Full Stack with Docker Compose
+
+```bash
+# Start all services (MongoDB + Mongo Express)
+docker-compose up -d
+
+# Stop all services
+docker-compose down
+
+# Stop and remove volumes (clean slate)
+docker-compose down -v
+
+# View logs
+docker-compose logs -f
+
+# Rebuild containers
+docker-compose up -d --build
+```
+
+### Services
+
+| Service | Port | Description |
+|---------|------|-------------|
+| MongoDB | 27017 | Database |
+| Mongo Express | 8081 | Database UI |
+
+---
+
+## 📚 API Documentation
+
+### Authors Endpoints
+
+```bash
+# Create author
+POST   /authors
+
+# Get all authors (with pagination & search)
+GET    /authors?page=1&limit=10&firstName=John
+
+# Get author by ID
+GET    /authors/:id
+
+# Update author
+PATCH  /authors/:id
+
+# Delete author
+DELETE /authors/:id
+```
+
+### Books Endpoints
+
+```bash
+# Create book
+POST   /books
+
+# Get all books (with pagination & filters)
+GET    /books?page=1&limit=10&title=Book&authorId=xxx
+
+# Get book by ID (with author info)
+GET    /books/:id?expand=author
+
+# Update book
+PATCH  /books/:id
+
+# Delete book
+DELETE /books/:id
+```
+
+---
+
+## 📁 Project Structure
+
+```
+bms/
+├── src/
+│   ├── common/          # Shared utilities, filters, helpers
+│   ├── config/          # Configuration files
+│   ├── database/        # Database module & providers
+│   ├── modules/
+│   │   ├── authors/     # Author module (controller, service, repository, DTOs)
+│   │   └── books/       # Book module (controller, service, repository, DTOs)
+│   └── main.ts          # Application entry point
+├── test/                # E2E tests
+├── docker-compose.yml   # Docker services configuration
+├── .env                 # Development environment variables
+├── .env.e2e            # E2E test environment variables
+└── package.json
+```
+
+---
+
+## 🛠️ Development Scripts
+
+```bash
+# Development
+npm run start:dev        # Start with hot-reload
+npm run start:debug      # Start in debug mode
+
+# Build
+npm run build           # Build for production
+
+# Code Quality
+npm run lint            # Run ESLint
+npm run format          # Format code with Prettier
+
+# Testing
+npm test                # Run unit tests
+npm run test:cov        # Run tests with coverage
+npm run test:e2e        # Run E2E tests
+```
+
+---
+
+## 🔧 Database Choice
+
+**Using:** MongoDB with Mongoose
+
+**Why MongoDB:**
+- I have strong experience with NoSQL databases, while also being familiar with traditional SQL databases.
+---
+
+## ✅ Features
+
+- ✅ RESTful API with NestJS
+- ✅ MongoDB with Mongoose ODM
+- ✅ Data validation with class-validator
+- ✅ Global exception filtering
+- ✅ Pagination & search filters
+- ✅ Unit tests (Jest)
+- ✅ E2E tests (Supertest)
+- ✅ Docker containerization
+- ✅ TypeScript path aliases
+- ✅ ISBN validation
+- ✅ 409 Conflict handling (duplicate ISBN)
+
+---
+
+## 📝 Example Requests
+
+### Create Author
+
+```bash
+curl -X POST http://localhost:3000/authors \
+  -H "Content-Type: application/json" \
+  -d '{
+    "firstName": "John",
+    "lastName": "Doe",
+    "bio": "A prolific writer",
+    "birthDate": "1980-05-20"
+  }'
+```
+
+### Create Book
+
+```bash
+curl -X POST http://localhost:3000/books \
+  -H "Content-Type: application/json" \
+  -d '{
+    "title": "The Great Novel",
+    "isbn": "978-3-16-148410-0",
+    "publishedDate": "2024-01-15",
+    "genre": "Fantasy",
+    "authorId": "<AUTHOR_ID_HERE>"
+  }'
+```
+
+### Get Books with Filter
+
+```bash
+curl "http://localhost:3000/books?page=1&limit=10&authorId=<AUTHOR_ID>"
+```
