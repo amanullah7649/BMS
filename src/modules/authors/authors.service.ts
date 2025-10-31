@@ -42,6 +42,9 @@ export class AuthorsService {
     }
 
     const author = await this.authorRepository.update(id, updateData);
+    if (!author) {
+      throw new NotFoundException(`Author with ID ${id} not found`);
+    }
     return author;
   }
 
