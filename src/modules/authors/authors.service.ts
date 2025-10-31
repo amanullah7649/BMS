@@ -42,6 +42,9 @@ export class AuthorsService {
     }
 
     const author = await this.authorRepository.update(id, updateData);
+    if (!author) {
+      throw new NotFoundException(`Author with ID ${id} not found`);
+    }
     return author;
   }
 
@@ -87,9 +90,10 @@ export class AuthorsService {
   /**
    * Find a single author by ID
    */
-  async findOne(id: string): Promise<Author> {
+  async findById(id: string): Promise<Author> {
 
-    const author = await this.authorRepository.findOne(id);
+
+    const author = await this.authorRepository.findById(id);
     if (!author) {
       throw new NotFoundException(`Author with ID ${id} not found`);
     }

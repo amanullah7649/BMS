@@ -3,12 +3,10 @@ import {
     Controller,
     Delete,
     Get,
-    HttpCode,
-    HttpStatus,
     Param,
     Patch,
     Post,
-    Query,
+    Query
 } from '@nestjs/common';
 import { AuthorsService } from './authors.service';
 import { CreateAuthorDto } from './dtos/create-author.dto';
@@ -25,7 +23,6 @@ export class AuthorsController {
     ) { }
 
     @Post()
-    @HttpCode(HttpStatus.CREATED)
     async create(@Body() createAuthorDto: CreateAuthorDto): Promise<Author> {
         return this.authorsService.create(createAuthorDto);
     }
@@ -37,7 +34,7 @@ export class AuthorsController {
 
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<Author> {
-        return this.authorsService.findOne(id);
+        return this.authorsService.findById(id);
     }
 
 
@@ -51,7 +48,6 @@ export class AuthorsController {
 
 
     @Delete(':id')
-    @HttpCode(HttpStatus.NO_CONTENT)
     async remove(@Param('id') id: string): Promise<void> {
         return this.authorsService.remove(id);
     }
