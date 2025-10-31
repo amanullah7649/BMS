@@ -34,7 +34,7 @@ export class AuthorsController {
 
     @Get(':id')
     async findOne(@Param('id') id: string): Promise<Author> {
-        return this.authorsService.findOne(id);
+        return this.authorsService.findById(id);
     }
 
 

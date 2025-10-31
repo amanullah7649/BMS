@@ -18,7 +18,7 @@ const mockAuthor = {
 } as unknown as Author;
 const mockAuthorRepository = {
   create: jest.fn(),
-  findOne: jest.fn(),
+  findById: jest.fn(),
   findAll: jest.fn(),
   update: jest.fn(),
   delete: jest.fn(),
@@ -261,26 +261,26 @@ describe('AuthorsService', () => {
     });
   });
 
-  describe('findOne', () => {
+  describe('findById', () => {
     it('should return an author when found', async () => {
       const id = '507f1f77bcf86cd799439011';
-      jest.spyOn(authorRepository, 'findOne').mockResolvedValue(mockAuthor);
+      jest.spyOn(authorRepository, 'findById').mockResolvedValue(mockAuthor);
 
-      const result = await service.findOne(id);
+      const result = await service.findById(id);
 
       expect(result).toEqual(mockAuthor);
-      expect(authorRepository.findOne).toHaveBeenCalledWith(id);
+      expect(authorRepository.findById).toHaveBeenCalledWith(id);
     });
 
     it('should throw NotFoundException when author not found', async () => {
       const id = '507f1f77bcf86cd799439011';
-      jest.spyOn(authorRepository, 'findOne').mockResolvedValue(null);
+      jest.spyOn(authorRepository, 'findById').mockResolvedValue(null);
 
-      await expect(service.findOne(id)).rejects.toThrow(NotFoundException);
-      await expect(service.findOne(id)).rejects.toThrow(
+      await expect(service.findById(id)).rejects.toThrow(NotFoundException);
+      await expect(service.findById(id)).rejects.toThrow(
         `Author with ID ${id} not found`,
       );
-      expect(authorRepository.findOne).toHaveBeenCalledWith(id);
+      expect(authorRepository.findById).toHaveBeenCalledWith(id);
     });
   });
 

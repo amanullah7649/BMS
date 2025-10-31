@@ -20,7 +20,7 @@ export class BooksService {
      * Create a new book
      */
     async create(createBookDto: CreateBookDto): Promise<Book> {
-        const author = await this.authorsService.findOne(createBookDto.authorId);
+        const author = await this.authorsService.findById(createBookDto.authorId);
 
         if (!author) {
             throw new BadRequestException(`Author with ID ${createBookDto.authorId} not found`);
@@ -117,7 +117,7 @@ export class BooksService {
         const updateData: any = { ...updateBookDto };
 
         if (updateBookDto?.authorId) {
-            const author = await this.authorsService.findOne(updateBookDto.authorId);
+            const author = await this.authorsService.findById(updateBookDto.authorId);
             if (!author) {
                 throw new BadRequestException(`Author with ID ${updateBookDto.authorId} not found`);
             }

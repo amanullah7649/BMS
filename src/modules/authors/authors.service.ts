@@ -90,7 +90,7 @@ export class AuthorsService {
   /**
    * Find a single author by ID
    */
-  async findOne(id: string): Promise<Author> {
+  async findById(id: string): Promise<Author> {
 
 
     const author = await this.authorRepository.findById(id);

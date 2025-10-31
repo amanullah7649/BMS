@@ -64,6 +64,17 @@
       "json",
       "ts"
     ],
+    "moduleNameMapper": {
+      "^@common/(.*)$": "<rootDir>/common/$1",
+      "^@database/(.*)$": "<rootDir>/database/$1",
+      "^@app/(.*)$": "<rootDir>/app/$1",
+      "^@config/(.*)$": "<rootDir>/config/$1",
+      "^@models/(.*)$": "<rootDir>/models/$1",
+      "^@services/(.*)$": "<rootDir>/services/$1",
+      "^@utils/(.*)$": "<rootDir>/utils/$1",
+      "^@interfaces/(.*)$": "<rootDir>/interfaces/$1",
+      "^@decorators/(.*)$": "<rootDir>/decorators/$1"
+    },
     "rootDir": "src",
     "testRegex": ".*\\.spec\\.ts$",
     "transform": {

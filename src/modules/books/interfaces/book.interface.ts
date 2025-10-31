@@ -1,4 +1,4 @@
-import { Author } from "src/modules/authors/schemas/author.schema";
+import { Author } from "../../authors/schemas/author.schema";
 import { Book } from "../schemas/books.schema";
 
 /**
